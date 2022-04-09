@@ -6,7 +6,6 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.paint.Color;
-import javafx.stage.Screen;
 import javafx.stage.Stage;
 import pl.mvasio.colorsPalete.Palette;
 import pl.mvasio.game.ColorsGenerator;
@@ -14,21 +13,13 @@ import pl.mvasio.game.NewGame;
 import pl.mvasio.roundsView.RoundView;
 
 import java.io.IOException;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
-public abstract class AppController {
-    public static final double GAME_SCENE_WIDTH = 900;
-    public static final double GAME_SCENE_HEIGHT = 650;
-    public static final double MENU_WIDTH = 550;
-    public static final double MENU_HEIGHT = 300;
-    public static final double SETTINGS_WIDTH = 600;
-    public static final double SETTINGS_HEIGHT = 400;
-    public static final double SCREEN_WIDTH = Screen.getPrimary().getBounds().getWidth();
-    public static final double SCREEN_HEIGHT = Screen.getPrimary().getBounds().getHeight();
+import static pl.mvasio.gameApp.GameScreenProperties.*;
+import static pl.mvasio.gameApp.GameplayProperties.*;
 
-
+public abstract class GameController {
     protected Parent root;
     protected Stage stage;
     protected Scene scene;
@@ -37,53 +28,37 @@ public abstract class AppController {
     protected static int expectedQuantity;
     protected static int roundsQuantity;
 
-    protected static final Color [] defaultColors = new Color[]{
-            Color.RED,
-            Color.GREEN,
-            Color.CORAL,
-            Color.LIME,
-            Color.PURPLE,
-            Color.BLUE,
-            Color.PINK,
-            Color.BURLYWOOD,
-            Color.FLORALWHITE
-    };
-
     protected List <Color> colorsPool;
     protected List <Color> colorsToGuess;
 
     protected NewGame game;
     protected Palette palette;
 
-    public AppController (){
-        this(   colorsPoolSize > 0 ? colorsPoolSize : SettingsController.DEFAULT_COLOR_POOL_SIZE,
-                expectedQuantity > 0 ? expectedQuantity: SettingsController.DEFAULT_EXPECTED_QUANTITY,
-                roundsQuantity > 0 ? roundsQuantity : SettingsController.DEFAULT_ROUNDS_QUANTITY );
-
+    public GameController(){
+        this (  colorsPoolSize > 0 ? colorsPoolSize : DEFAULT_COLOR_POOL_SIZE,
+                expectedQuantity > 0 ? expectedQuantity: DEFAULT_EXPECTED_QUANTITY,
+                roundsQuantity > 0 ? roundsQuantity : DEFAULT_ROUNDS_QUANTITY );
     }
 
-    public AppController (int poolSize, int expectedQuantity, int roundsQuantity){
-        this (poolSize, expectedQuantity, roundsQuantity, Arrays.asList(defaultColors) );
+    public GameController(int poolSize, int expectedQuantity, int roundsQuantity){
+        this (poolSize, expectedQuantity, roundsQuantity, DEFAULT_COLORS );
     }
 
-    public AppController (int poolSize, int expectedQuantity, int roundsQuantity, List<Color> colorsPool){
-        this ( poolSize, expectedQuantity, roundsQuantity, colorsPool, 100);
+    public GameController(int poolSize, int expectedQuantity, int roundsQuantity, List<Color> colorsPool){
+        this ( poolSize, expectedQuantity, roundsQuantity, colorsPool, INGAME_PALETTE_RADIUS);
     }
 
-    public AppController (int poolSize, int expectedQuantity, int roundsQuantity, List<Color> colorsPool, double paletteRadius){
-        AppController.colorsPoolSize = poolSize;
-        AppController.expectedQuantity = expectedQuantity;
-        AppController.roundsQuantity = roundsQuantity;
+    public GameController(int poolSize, int expectedQuantity, int roundsQuantity, List<Color> colorsPool, double paletteRadius){
+        GameController.colorsPoolSize = poolSize;
+        GameController.expectedQuantity = expectedQuantity;
+        GameController.roundsQuantity = roundsQuantity;
         Color [] colorsForPalette = new Color[poolSize];
         for ( int i = 0; i < poolSize; i++){
             colorsForPalette[i] = colorsPool.get(i);
         }
         this.colorsPool = List.of(colorsForPalette);
         this.colorsToGuess = new ColorsGenerator( colorsPool , expectedQuantity ).getColorsToGuess();
-
-
         this.palette = new Palette(paletteRadius, colorsForPalette);
-
         RoundView.newGame(roundsQuantity);
         this.game = new NewGame(roundsQuantity, expectedQuantity, colorsPool);
     }
@@ -119,14 +94,5 @@ public abstract class AppController {
         stage.setX((SCREEN_WIDTH - SETTINGS_WIDTH) / 2);
         stage.setY((SCREEN_HEIGHT - SETTINGS_HEIGHT) / 2);
         stage.show();
-    }
-
-
-    protected void setPalette (Palette palette){
-        this.palette = palette.clone();
-    }
-
-    public NewGame getGame() {
-        return game;
     }
 }

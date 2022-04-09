@@ -7,19 +7,17 @@ import javafx.scene.paint.Color;
 
 import java.util.Arrays;
 
-public class Palette extends Pane implements Cloneable{
+public class Palette extends Pane{
 
+    private final MyArc[] palette;
     private double radius;
     private Color[] colors;
-    private MyArc[] palette;
 
     public Palette(double radius, Color[] colors) {
         super();
-//        this.setStyle("-fx-background-color: black;");
         this.radius = radius;
         this.colors = colors;
         this.palette = createArcs();
-
         this.setLayout(100, 100);
         this.getChildren().addAll(palette);
 
@@ -74,14 +72,6 @@ public class Palette extends Pane implements Cloneable{
 
     public void setRadius(double radius) {
         this.radius = radius;
-    }
-
-    @Override
-    public Palette clone(){
-        Palette tmp = this.clone();
-        tmp.colors = Arrays.copyOf(this.colors, this.colors.length);
-        tmp.palette = Arrays.copyOf(this.palette, this.palette.length);
-        return tmp;
     }
 
     @Override

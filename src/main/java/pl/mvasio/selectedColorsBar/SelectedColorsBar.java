@@ -5,19 +5,18 @@ import javafx.scene.layout.HBox;
 import javafx.scene.paint.Color;
 import pl.mvasio.circles.EffectedCircle;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class SelectedColorsBar extends HBox {
 
     private final int circlesQuantity;
-    private double radius;
-    private double padding;
-    private EffectedCircle [] circles;
+    private final double radius;
+    private List<EffectedCircle> circles;
 
-    public SelectedColorsBar(int circlesQuantity, double radius, double spacing) {
+    public SelectedColorsBar(int circlesQuantity, double radius) {
         this.circlesQuantity = circlesQuantity;
         this.radius = radius;
-        this.padding = padding;
         this.createCircles();
         this.setSpacing(9);
         this.getChildren().addAll(circles);
@@ -26,37 +25,24 @@ public class SelectedColorsBar extends HBox {
 
     public void setColors(List<Color> colors){
         unselectAll();
-        if (colors.size() > 0){
+
+        if ( colors.size() > 0)
             for ( int i = 0; i < colors.size(); i++){
-                circles[i].setFill(colors.get(i));
+                circles.get(i).setFill(colors.get(i));
             }
-        }
     }
 
     private void createCircles(){
-        EffectedCircle [] circles = new EffectedCircle[circlesQuantity];
+        List <EffectedCircle> circles = new ArrayList<>(circlesQuantity);
 
-        for ( int i = 0 ; i < circles.length ; i++){
-            circles[i] = new EffectedCircle(radius);
+        for ( int i = 0 ; i < circlesQuantity ; i++){
+            circles.add(new EffectedCircle(radius));
         }
 
         this.circles = circles;
     }
 
-    public EffectedCircle[] getCircles(){
-        return circles;
-    }
-
-//    public void setLayout(double x , double y){
-//        for ( int i = 0; i < circles.length; i++){
-//            circles[i].setLayoutX(x + (i * (radius * 2 + padding)));
-//            circles[i].setLayoutY(y);
-//        }
-//    }
-
     public void unselectAll(){
-        for ( EffectedCircle c: circles){
-            c.setDefaultFill();
-        }
+        circles.forEach(EffectedCircle::setDefaultFill);
     }
 }

@@ -8,8 +8,11 @@ import javafx.scene.control.Label;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Set;
 
-public class SettingsController extends AppController{
+import static pl.mvasio.gameApp.GameplayProperties.*;
+
+public class SettingsController extends GameController {
 
     @FXML
     private ChoiceBox<Integer> colorsPoolSizeBox;
@@ -24,85 +27,49 @@ public class SettingsController extends AppController{
     @FXML
     private Button saveSettingsButton;
 
-    public static final int DEFAULT_COLOR_POOL_SIZE = 6;
-    public static final int DEFAULT_EXPECTED_QUANTITY = 3;
-    public static final int DEFAULT_ROUNDS_QUANTITY = 6;
-
-    private static int [] colorsPoolSizeOptions = new int[]{
-            3,
-            4,
-            5,
-            6,
-            7,
-            8,
-            9
-    } ;
-
-    private static int [] expectedQuantityOptions = new int[]{
-            2,
-            3,
-            4,
-            5,
-            6,
-    };
-
-    private static int [] roundsQuantityOptions = new int[]{
-            2,
-            3,
-            4,
-            5,
-            6,
-            7,
-            8
-    };
-
-
     public SettingsController (){
-        super(  AppController.colorsPoolSize > 0 ? AppController.colorsPoolSize : SettingsController.DEFAULT_COLOR_POOL_SIZE,
-                AppController.expectedQuantity > 0 ? AppController.expectedQuantity : SettingsController.DEFAULT_EXPECTED_QUANTITY,
-                AppController.roundsQuantity > 0 ? AppController.roundsQuantity : SettingsController.DEFAULT_ROUNDS_QUANTITY,
-                List.of(AppController.defaultColors));
+        super(  GameController.colorsPoolSize > 0 ? GameController.colorsPoolSize : DEFAULT_COLOR_POOL_SIZE,
+                GameController.expectedQuantity > 0 ? GameController.expectedQuantity : DEFAULT_EXPECTED_QUANTITY,
+                GameController.roundsQuantity > 0 ? GameController.roundsQuantity : DEFAULT_ROUNDS_QUANTITY,
+                DEFAULT_COLORS );
     }
 
     @FXML
     private void initialize(){
         this.colorsPoolSizeBox.setValue(
-                AppController.colorsPoolSize > 0 ? AppController.colorsPoolSize : DEFAULT_COLOR_POOL_SIZE );
+                GameController.colorsPoolSize > 0 ? GameController.colorsPoolSize : DEFAULT_COLOR_POOL_SIZE );
         this.expectedQuantityBox.setValue(
-                AppController.expectedQuantity > 0 ? AppController.expectedQuantity : DEFAULT_EXPECTED_QUANTITY );
+                GameController.expectedQuantity > 0 ? GameController.expectedQuantity : DEFAULT_EXPECTED_QUANTITY );
         this.roundsQuantityBox.setValue(
-                AppController.roundsQuantity > 0 ? AppController.roundsQuantity : DEFAULT_ROUNDS_QUANTITY );
+                GameController.roundsQuantity > 0 ? GameController.roundsQuantity : DEFAULT_ROUNDS_QUANTITY );
 
-        this.setBox(colorsPoolSizeBox, colorsPoolSizeOptions);
-        this.setBox(expectedQuantityBox, expectedQuantityOptions);
-        this.setBox(roundsQuantityBox, roundsQuantityOptions);
+        this.setBox(colorsPoolSizeBox, COLORS_POOL_SIZE_OPTIONS);
+        this.setBox(expectedQuantityBox, EXPECTED_COLORS_QUANTITY_OPTIONS);
+        this.setBox(roundsQuantityBox, ROUNDS_QUANTITY_OPTIONS);
     }
 
-    private void setBox ( ChoiceBox<Integer> box, int[] items){
-        for ( int i: items){
-            box.getItems().add(i);
-        }
+    private void setBox ( ChoiceBox<Integer> box, Set<Integer> options){
+        box.getItems().addAll(options);
     }
 
     @FXML
     void saveSettings(ActionEvent event) {
-        AppController.colorsPoolSize = colorsPoolSizeBox.getValue();
-        AppController.expectedQuantity = expectedQuantityBox.getValue();
-        AppController.roundsQuantity = roundsQuantityBox.getValue();
+        GameController.colorsPoolSize = colorsPoolSizeBox.getValue();
+        GameController.expectedQuantity = expectedQuantityBox.getValue();
+        GameController.roundsQuantity = roundsQuantityBox.getValue();
 
         try {
             super.switchToStartMenu(event);
         } catch (IOException e){
             e.printStackTrace();
         }
-        System.out.println(colorsPoolSize + " " + expectedQuantity + " " + roundsQuantity);
     }
 
     @FXML
     void useDefaultSettings(ActionEvent event) {
-        AppController.colorsPoolSize = DEFAULT_COLOR_POOL_SIZE;
-        AppController.expectedQuantity = DEFAULT_EXPECTED_QUANTITY;
-        AppController.roundsQuantity = DEFAULT_ROUNDS_QUANTITY;
+        GameController.colorsPoolSize = DEFAULT_COLOR_POOL_SIZE;
+        GameController.expectedQuantity = DEFAULT_EXPECTED_QUANTITY;
+        GameController.roundsQuantity = DEFAULT_ROUNDS_QUANTITY;
 
         try {
             super.switchToStartMenu(event);

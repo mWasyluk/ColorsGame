@@ -12,7 +12,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import pl.mvasio.colorsPalete.MyArc;
-import pl.mvasio.colorsPalete.Palette;
 import pl.mvasio.game.ColorsHolder;
 import pl.mvasio.game.NewGame;
 import pl.mvasio.roundsView.RoundView;
@@ -21,7 +20,9 @@ import pl.mvasio.selectedColorsBar.SelectedColorsBar;
 import java.io.IOException;
 import java.util.List;
 
-public class GameSceneController extends AppController{
+import static pl.mvasio.gameApp.GameplayProperties.*;
+
+public class GameSceneController extends GameController {
 
     @FXML
     private BorderPane mainPane;
@@ -48,14 +49,12 @@ public class GameSceneController extends AppController{
     @FXML
     private Text labelText;
 
-    private SelectedColorsBar bar ;
-    private Palette colorsPalette ;
+    private SelectedColorsBar bar;
     public static double selectionPaneWidth;
-    public static final double GAME_PALETTE_RADIUS = 110;
 
 
     public GameSceneController(){
-        super(AppController.colorsPoolSize, AppController.expectedQuantity, AppController.roundsQuantity, ColorGeneratorController.colors, GAME_PALETTE_RADIUS);
+        super(GameController.colorsPoolSize, GameController.expectedQuantity, GameController.roundsQuantity, ColorGeneratorController.colors, MANU_PALETTE_RADIUS);
     }
 
     @FXML
@@ -69,8 +68,7 @@ public class GameSceneController extends AppController{
 
     private void initializeView(){
         double radius = 15;
-        double spacing = (selectionPane.getWidth() - game.COLORS_TO_GUESS_QUANTITY * radius) / game.COLORS_TO_GUESS_QUANTITY - 1;
-        bar = new SelectedColorsBar(game.COLORS_TO_GUESS_QUANTITY, radius, spacing);
+        bar = new SelectedColorsBar(game.COLORS_TO_GUESS_QUANTITY, radius);
 
         selectionPane.setCenter(super.palette);
         selectionPane.setBottom(bar);
@@ -78,44 +76,35 @@ public class GameSceneController extends AppController{
         this.setRoundToEndLabel();
 
         selectionPaneWidth = this.selectionPane.getPrefWidth();
-        super.palette.setLayout(selectionPaneWidth / 2 , GAME_PALETTE_RADIUS);
-        super.palette.setRadius(GAME_PALETTE_RADIUS);
+        super.palette.setLayout(selectionPaneWidth / 2 , MANU_PALETTE_RADIUS);
+        super.palette.setRadius(MANU_PALETTE_RADIUS);
     }
 
     public EventHandler<MouseEvent> getPaletteEventHandler(ColorsHolder holder, SelectedColorsBar bar ){
-        return new EventHandler<MouseEvent>() {
-            @Override
-            public void handle(MouseEvent event) {
-                holder.addColor(((MyArc)event.getSource()).getColor());
-                bar.setColors(holder.getColors());
-            }
+        return event -> {
+            holder.addColor(((MyArc)event.getSource()).getColor());
+            bar.setColors(holder.getColors());
         };
     }
 
     public EventHandler<ActionEvent> getUndoButtonEventHandler (ColorsHolder holder, SelectedColorsBar bar ){
-        return new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                holder.removeColor(holder.getColors().size() - 1);
-                bar.setColors(holder.getColors());
-            }
+        return event -> {
+            holder.removeColor(holder.getColors().size() - 1);
+            bar.setColors(holder.getColors());
         };
     }
 
     public EventHandler<ActionEvent> getAcceptButtonEventHandler ( ColorsHolder holder, SelectedColorsBar bar ){
-        return new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-                if (holder.getColors().size() == game.COLORS_TO_GUESS_QUANTITY) {
-                    RoundView round = new RoundView(game.EXPECTED_COLORS, holder.getColors());
-                    bar.unselectAll();
-                    holder.removeAllColors();
-                    leftPane.getChildren().add(round);
-                    setRoundToEndLabel();
-                    if ( round.isGuessed()) gameWon();
-                    else if ( RoundView.getRoundsToEndGame() <= 0){
-                        gameOver();
-                    }
+        return event -> {
+            if (holder.getColors().size() == game.COLORS_TO_GUESS_QUANTITY) {
+                RoundView round = new RoundView(game.EXPECTED_COLORS, holder.getColors());
+                bar.unselectAll();
+                holder.removeAllColors();
+                leftPane.getChildren().add(round);
+                setRoundToEndLabel();
+                if ( round.isGuessed()) gameWon();
+                else if ( RoundView.getRoundsToEndGame() <= 0){
+                    gameOver();
                 }
             }
         };
@@ -126,14 +115,10 @@ public class GameSceneController extends AppController{
         this.roundToEndLabel.setText(text);
     }
 
-    public void setColorsOfPalette(List<Color> colors){
-        super.palette.setColors(colors.toArray(new Color[0]));
-    }
-
     private void gameOver(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText("Niestety nie udało się...");
-        alert.getDialogPane().setContentText("Nacisnij \'OK\' żeby rozpocząć od nowa.");
+        alert.getDialogPane().setContentText("Nacisnij 'OK' żeby rozpocząć od nowa.");
         labelText.setText("Nie udało się :(");
         alert.showAndWait();
         labelText.setText("");
@@ -148,7 +133,7 @@ public class GameSceneController extends AppController{
     public void gameWon(){
         Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setHeaderText("Brawo mistrzu. Wygrałeś!!!");
-        alert.getDialogPane().setContentText("Nacisnij \'OK\' żeby rozpocząć od nowa.");
+        alert.getDialogPane().setContentText("Nacisnij 'OK' żeby rozpocząć od nowa.");
         labelText.setText("Wygrankooo!!!");
         alert.showAndWait();
         labelText.setText("");

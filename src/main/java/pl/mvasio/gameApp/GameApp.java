@@ -7,19 +7,19 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.util.Objects;
 
+import static pl.mvasio.gameApp.GameScreenProperties.*;
+
+
 
 public class GameApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-
-        FXMLLoader loader = new FXMLLoader();
-        Parent root = loader.load(Objects.requireNonNull(getClass().getResource("/GameMenu.fxml")));
-
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/GameMenu.fxml")));
         stage.setScene(new Scene(root));
         stage.setTitle("Colors Game");
         stage.setResizable(false);
-        stage.setX((AppController.SCREEN_WIDTH - AppController.MENU_WIDTH) / 2);
-        stage.setY((AppController.SCREEN_HEIGHT - AppController.MENU_HEIGHT) / 2);
+        stage.setX((SCREEN_WIDTH - MENU_WIDTH) / 2);
+        stage.setY((SCREEN_HEIGHT - MENU_HEIGHT) / 2);
         stage.show();
 
     }

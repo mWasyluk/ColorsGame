@@ -12,7 +12,9 @@ import pl.mvasio.colorsPalete.RandomColor;
 import java.io.IOException;
 import java.util.List;
 
-public class ColorGeneratorController extends AppController {
+import static pl.mvasio.gameApp.GameplayProperties.*;
+
+public class ColorGeneratorController extends GameController {
 
     @FXML
     private BorderPane palettePane;
@@ -35,10 +37,6 @@ public class ColorGeneratorController extends AppController {
     private static final double PALETTE_RADIUS = 100;
 
     public ColorGeneratorController(){
-//        super(  AppController.colorsPoolSize > 0 ? AppController.colorsPoolSize : SettingsController.DEFAULT_COLOR_POOL_SIZE,
-//                AppController.expectedQuantity > 0 ? AppController.expectedQuantity : SettingsController.DEFAULT_EXPECTED_QUANTITY,
-//                AppController.roundsQuantity > 0 ? AppController.roundsQuantity : SettingsController.DEFAULT_ROUNDS_QUANTITY,
-//                List.of(AppController.defaultColors));
         super();
         colors = super.colorsPool;
     }
@@ -47,7 +45,7 @@ public class ColorGeneratorController extends AppController {
     public void initialize(){
         palette.setLayout(PALETTE_X,PALETTE_Y);
         palettePane.getChildren().addAll(this.palette.getPalette());
-        setLabels(AppController.colorsPoolSize, AppController.expectedQuantity, AppController.roundsQuantity);
+        setLabels(colorsPoolSize, expectedQuantity, roundsQuantity);
     }
 
     private void setLabels(int v1, int v2, int v3){
@@ -60,7 +58,7 @@ public class ColorGeneratorController extends AppController {
     void generateColors(ActionEvent event) {
         while ( !palettePane.getChildren().isEmpty() ) palettePane.getChildren().remove(0);
 
-        Color [] c = RandomColor.getRandomColorsArray( AppController.colorsPoolSize > 0 ? AppController.colorsPoolSize : SettingsController.DEFAULT_COLOR_POOL_SIZE );
+        Color [] c = RandomColor.getRandomColorsArray( colorsPoolSize > 0 ? colorsPoolSize : DEFAULT_COLOR_POOL_SIZE );
         super.palette.setColors(c);
         colors = List.of(c);
         palettePane.getChildren().setAll(super.palette.getPalette());
