@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11" xmlns:fx="http://javafx.com/fxml/1" fx:controller="pl.mvasio.controller.SettingsController">
+   <center>
+      <VBox prefHeight="200.0" prefWidth="100.0" BorderPane.alignment="CENTER">
+         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
+            <VBox.margin>
+               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+            </VBox.margin>
+            <Label text="Kolorów w grze:">
+               <font>
+                  <Font name="Segoe Print Bold" size="18.0"/>
+               </font>
+            </Label>
+            <ChoiceBox fx:id="colorsPoolSizeBox" prefHeight="25.0" prefWidth="50.0"/>
+         </HBox>
+         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
+            <VBox.margin>
+               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+            </VBox.margin>
+            <Label text="Kolorów do odgadnięcia:">
+               <font>
+                  <Font name="Segoe Print Bold" size="18.0"/>
+               </font>
+            </Label>
+            <ChoiceBox fx:id="expectedQuantityBox" prefHeight="25.0" prefWidth="50.0"/>
+         </HBox>
+         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
+            <VBox.margin>
+               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+            </VBox.margin>
+            <Label text="Rund do końca gry:">
+               <font>
+                  <Font name="Segoe Print Bold" size="18.0"/>
+               </font>
+            </Label>
+            <ChoiceBox fx:id="roundsQuantityBox" prefHeight="25.0" prefWidth="50.0"/>
+         </HBox>
+         <HBox alignment="CENTER" layoutX="30.0" layoutY="296.0" prefHeight="100.0" prefWidth="200.0" spacing="50.0">
+            <VBox.margin>
+               <Insets bottom="20.0" left="20.0" right="20.0" top="20.0"/>
+            </VBox.margin>
+            <Button fx:id="defaultSettingsButton" mnemonicParsing="false" text="Ustawienia domyślne">
+               <font>
+                  <Font name="Segoe Print Bold" size="18.0"/>
+               </font>
+            </Button>
+            <Button fx:id="saveSettingsButton" mnemonicParsing="false" text="Zapisz zmiany">
+               <font>
+                  <Font name="Segoe Print Bold" size="18.0"/>
+               </font>
+            </Button>
+         </HBox>
+      </VBox>
+   </center>
+</BorderPane>

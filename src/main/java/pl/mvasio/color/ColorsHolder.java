@@ -1,4 +1,4 @@
-package pl.mvasio.game;
+package pl.mvasio.color;
 
 import javafx.scene.paint.Color;
 
@@ -7,16 +7,16 @@ import java.util.List;
 
 public class ColorsHolder {
 
-    public final int COLORS_QUANTITY;
-    private List<Color> colors ;
+    public final int colorsQuantity;
+    private final List<Color> colors ;
 
     public ColorsHolder( int colorsQuantity){
-        COLORS_QUANTITY = colorsQuantity;
-        colors = new ArrayList<>(COLORS_QUANTITY);
+        this.colorsQuantity = colorsQuantity;
+        colors = new ArrayList<>(this.colorsQuantity);
     }
 
     public void addColor(Color color){
-        if( colors.size() < COLORS_QUANTITY){
+        if( colors.size() < colorsQuantity){
             colors.add(color);
         }
     }

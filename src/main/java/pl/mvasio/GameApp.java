@@ -1,4 +1,4 @@
-package pl.mvasio.gameApp;
+package pl.mvasio;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -7,14 +7,14 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import java.util.Objects;
 
-import static pl.mvasio.gameApp.GameScreenProperties.*;
+import static pl.mvasio.properties.GameScreenProperties.*;
 
 
 
 public class GameApp extends Application {
     @Override
     public void start(Stage stage) throws Exception {
-        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/GameMenu.fxml")));
+        Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/MenuScreen.fxml")));
         stage.setScene(new Scene(root));
         stage.setTitle("Colors Game");
         stage.setResizable(false);
